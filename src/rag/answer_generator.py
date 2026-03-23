@@ -5,7 +5,10 @@ from langchain_groq import ChatGroq
 load_dotenv()
 
 def generate_answer(question, retrieved_docs):
-    context = "\n\n".join([doc.page_content for doc in retrieved_docs])
+    context = []
+    for doc in retrieved_docs:
+        context.append(doc.page_content)
+
 
     prompt = f"""You are a JEE math tutor helping students.
     Use the context below to answer the question.
