@@ -1,9 +1,24 @@
 import os
 import sys
+import re
 import json
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 load_dotenv()
+
+def extract_json(text):
+    """Extract JSON from LLM response that may contain markdown fences or extra text."""
+    text = text.strip()
+    text = re.sub(r'^```(?:json)?\s*', '', text)
+    text = re.sub(r'\s*```$', '', text)
+    text = text.strip()
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        match = re.search(r'\{[\s\S]*\}', text)
+        if match:
+            return json.loads(match.group())
+        raise
 
 def verifier(problem_text,answer,topic):
     llm = ChatGroq(
@@ -29,7 +44,7 @@ def verifier(problem_text,answer,topic):
         "confidence": 0.9
     }}"""
     response = llm.invoke(prompt)
-    result = json.loads(response.content)
+    result = extract_json(response.content)
     if result["verdict"] == "incorrect":
         print(" HITL: Answer is incorrect! Needs human review.")
     if result["confidence"] < 0.7:
