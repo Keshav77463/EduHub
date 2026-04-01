@@ -1,9 +1,26 @@
 import os
+import re
 import json
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 
 load_dotenv()
+
+def extract_json(text):
+    """Extract JSON from LLM response that may contain markdown fences or extra text."""
+    text = text.strip()
+    # Remove markdown code fences
+    text = re.sub(r'^```(?:json)?\s*', '', text)
+    text = re.sub(r'\s*```$', '', text)
+    text = text.strip()
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        # Try to find a JSON object in the text
+        match = re.search(r'\{[\s\S]*\}', text)
+        if match:
+            return json.loads(match.group())
+        raise
 def parse_problem(raw_problem):
     llm = ChatGroq(
         model="llama-3.3-70b-versatile",
@@ -25,7 +42,7 @@ def parse_problem(raw_problem):
         "needs_clarification": false
     }}"""
     response = llm.invoke(prompt)
-    result = json.loads(response.content.strip())
+    result = extract_json(response.content)
     if result["needs_clarification"] == True:
         print("HITL triggered: problem needs clarification")
     return result
