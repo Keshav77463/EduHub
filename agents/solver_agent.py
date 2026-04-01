@@ -1,9 +1,24 @@
 import os
 import sys
+import re
 import json
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
+
+def extract_json(text):
+    """Extract JSON from LLM response that may contain markdown fences or extra text."""
+    text = text.strip()
+    text = re.sub(r'^```(?:json)?\s*', '', text)
+    text = re.sub(r'\s*```$', '', text)
+    text = text.strip()
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        match = re.search(r'\{[\s\S]*\}', text)
+        if match:
+            return json.loads(match.group())
+        raise
 
 from src.rag.retriever import retrieve_documents
 
@@ -37,7 +52,7 @@ def solve_problem(problem_text, topic, vector_store):
 
     # Step 5: invoke + clean + parse
     response = llm.invoke(prompt)
-    result = json.loads(response.content)
+    result = extract_json(response.content)
 
     # Step 6: HITL check
     if result["confidence"] < 0.7:
