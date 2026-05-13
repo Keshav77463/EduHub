@@ -2,7 +2,8 @@ import os
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 
-PERSIST_DIR = "D:\\EduHub\\data\\chroma_db"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+PERSIST_DIR = os.path.join(BASE_DIR, "data", "chroma_db")
 
 def create_vector_store(chunks, persist_directory=PERSIST_DIR):
     embeddings = HuggingFaceEmbeddings(
