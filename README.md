@@ -46,10 +46,16 @@ A multi-agent Retrieval-Augmented Generation (RAG) system that solves JEE math p
 
 ---
 
+<<<<<<< Updated upstream
 
 ## 📁 Project Structure
 
 
+=======
+## 📁 Project Structure
+
+```
+>>>>>>> Stashed changes
 EduHub/
 ├── app.py                          # Streamlit application entry point
 ├── pyproject.toml                  # Project metadata & dependencies
@@ -81,7 +87,11 @@ EduHub/
 └── data/
     ├── knowledge_base/             # PDF documents for RAG ingestion
     └── chroma_db/                  # Persisted ChromaDB vector store
+<<<<<<< Updated upstream
 
+=======
+```
+>>>>>>> Stashed changes
 
 ---
 
@@ -159,7 +169,11 @@ The system automatically triggers Human-in-the-Loop alerts when:
 - ⚠️ The solver's **confidence is below 70%**
 - 🛑 The verifier flags the answer as **incorrect**
 
+<<<<<<< Updated upstream
 
+=======
+---
+>>>>>>> Stashed changes
 
 ## 🔧 Environment Variables
 
@@ -168,7 +182,12 @@ The system automatically triggers Human-in-the-Loop alerts when:
 | `GROQ_API_KEY` | API key for Groq LLM inference |
 | `MONGODB_URI` | MongoDB Atlas connection string |
 | `DB_NAME` | MongoDB database name |
+<<<<<<< Updated upstream
 -
+=======
+
+---
+>>>>>>> Stashed changes
 
 ## 📄 License
 
@@ -178,4 +197,8 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 <p align="center">
   Built with ❤️ for JEE aspirants
+<<<<<<< Updated upstream
 </p>
+=======
+</p>
+>>>>>>> Stashed changes
