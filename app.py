@@ -11,9 +11,11 @@ st.set_page_config(
     page_icon="🎓",
     layout="wide"
 )
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 @st.cache_resource
 def load_vector_store():
-    return get_or_create_vector_store("D:\\EduHub\\data\\knowledge_base")
+    return get_or_create_vector_store(os.path.join(BASE_DIR, "data", "knowledge_base"))
 vector_store = load_vector_store()
 with st.sidebar:
     st.header("⚙️ Settings")
