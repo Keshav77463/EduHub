@@ -1,8 +1,7 @@
 import os
 import sys
 import streamlit as st
-sys.path.append(os.path.dirname(__file__))
-
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from src.pipeline import run_pipeline
 from src.rag.embedder import get_or_create_vector_store
 from src.db.memory import Mongomemory
